@@ -137,7 +137,9 @@ import openfl.utils.JNI;
 		funcConsume(purchase.originalJson, purchase.signature);
 	}
 
-	public static function queryInventory (queryItemDetails:Bool = false, moreItems:Array<String> = null):Void {}
+	public static function queryInventory ():Void {
+		//funcQueryInventory();
+	}
 
 	// Getter & Setter Methods
 
@@ -182,6 +184,7 @@ import openfl.utils.JNI;
 	static var funcBuy = JNI.createStaticMethod ("org/haxe/extension/iap/InAppPurchase", "buy", "(Ljava/lang/String;Ljava/lang/String;)V");
 	static var funcQuerySkuDetails = JNI.createStaticMethod ("org/haxe/extension/iap/InAppPurchase", "querySkuDetails", "([Ljava/lang/String;)V");
 	static var funcConsume = JNI.createStaticMethod ("org/haxe/extension/iap/InAppPurchase", "consume", "(Ljava/lang/String;Ljava/lang/String;)V");
+	//static var funcQueryInventory = JNI.createStaticMethod ("org/haxe/extension/iap/InAppPurchase", "queryInventory", "(Ljava/lang/String;Ljava/lang/String;)V");
 	//static var funcCleanup = JNI.createStaticMethod("org/haxe/extension/iap/InAppPurchase", "cleanup", "()V");
 }
 
