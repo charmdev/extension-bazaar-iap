@@ -119,7 +119,7 @@ public class InAppPurchase extends Extension {
 				if (result.isSuccess ()) {
 					Extension.callbackHandler.post (new Runnable () {
 						@Override public void run () {
-							Log.i ("Initializing billing service");
+							Log.i ("Query Inventory");
 							queryInventory();
 						}
 					});
@@ -181,12 +181,13 @@ public class InAppPurchase extends Extension {
 			Log.i (Boolean.toString(result.isFailure()));
 
 		  if (result.isFailure()) {
-			Log.i("onQueryInventoryFailure");
+			Log.i("onQueryInventoryFailure" + result.toString());
 			fireCallback("onStarted", new Object[] { "Failure" });
 		  }
 		  else {
-			Log.i (inventory.toJsonString());
-			fireCallback("onQueryInventoryComplete", new Object[] {inventory.toJsonString()});
+			String serialized = inventory.toJsonString();
+			Log.i ("Serialized inventory" + serialized);
+			fireCallback("onQueryInventoryComplete", new Object[] {serialized});
 			fireCallback("onStarted", new Object[] { "Success" });
 		  }
 	   }
