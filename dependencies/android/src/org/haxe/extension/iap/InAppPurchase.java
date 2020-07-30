@@ -112,6 +112,7 @@ public class InAppPurchase extends Extension {
 		}
 		
 		InAppPurchase.inAppPurchaseHelper = new IabHelper (Extension.mainContext, publicKey);
+		//InAppPurchase.inAppPurchaseHelper.enableDebugLogging(true, "Billing hx");
 		InAppPurchase.inAppPurchaseHelper.startSetup (new IabHelper.OnIabSetupFinishedListener () {
 			
 			public void onIabSetupFinished (final IabResult result) {
@@ -142,8 +143,13 @@ public class InAppPurchase extends Extension {
 
 		return super.onActivityResult (requestCode, resultCode, data);
 	}
-	
-	
+
+	@Override public void onCreate (Bundle savedInstanceState) {
+		if (InAppPurchase.inAppPurchaseHelper != null) {
+			InAppPurchase.inAppPurchaseHelper.onReCreate(Extension.mainActivity);
+		}
+	}
+
 	@Override public void onDestroy () {
 		if (InAppPurchase.inAppPurchaseHelper != null) {
 			InAppPurchase.inAppPurchaseHelper.dispose ();

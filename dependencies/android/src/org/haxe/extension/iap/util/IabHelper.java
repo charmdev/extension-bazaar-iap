@@ -538,6 +538,22 @@ public class IabHelper {
         return true;
     }
 
+    public void onReCreate(Activity act) {
+        if (mRequestCode > 0) {
+            logDebug("finishActivity: " + mRequestCode);
+            act.finishActivity(mRequestCode);
+            mRequestCode = 0;
+        }
+        
+        if (mPurchaseListener != null)
+        {
+            logDebug("Activity recreate");
+            IabResult result = new IabResult(IABHELPER_BAD_RESPONSE, "Activity recreate");
+            mPurchaseListener.onIabPurchaseFinished(result, null);
+            mPurchaseListener = null;
+        }
+    }
+
     public Inventory queryInventory(boolean querySkuDetails, List<String> moreSkus) throws IabException {
         return queryInventory(querySkuDetails, moreSkus, null);
     }
