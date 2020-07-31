@@ -2,5 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.haxe.extension.iap" >
 	
 	<uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR" />
+
+	<application>
+		<receiver android:name=".util.IABReceiver">
+			<intent-filter>
+				<action android:name="com.farsitel.bazaar.ping"/>
+				<action android:name="com.farsitel.bazaar.purchase"/>
+				<action android:name="com.farsitel.bazaar.billingSupport"/>
+				<action android:name="com.farsitel.bazaar.consume"/>
+				<action android:name="com.farsitel.bazaar.getPurchase"/>
+			</intent-filter>
+		</receiver>
+	</application>
 	
 </manifest>

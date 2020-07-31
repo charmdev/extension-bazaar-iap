@@ -12,11 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.haxe.extension.iap.util;
 
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -71,13 +75,16 @@ public class Security {
      */
     public static PublicKey generatePublicKey(String encodedPublicKey) {
         try {
-            byte[] decodedKey = Base64.decode(encodedPublicKey, Base64.DEFAULT);
+            byte[] decodedKey = Base64.decode(encodedPublicKey);
             KeyFactory keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
             return keyFactory.generatePublic(new X509EncodedKeySpec(decodedKey));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (InvalidKeySpecException e) {
             Log.e(TAG, "Invalid key specification.");
+            throw new IllegalArgumentException(e);
+        } catch (Base64DecoderException e) {
+            Log.e(TAG, "Base64 decoding failed.");
             throw new IllegalArgumentException(e);
         }
     }
@@ -92,18 +99,12 @@ public class Security {
      * @return true if the data and signature match
      */
     public static boolean verify(PublicKey publicKey, String signedData, String signature) {
-        byte[] signatureBytes;
+        Signature sig;
         try {
-            signatureBytes = Base64.decode(signature, Base64.DEFAULT);
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "Base64 decoding failed.");
-            return false;
-        }
-        try {
-            Signature sig = Signature.getInstance(SIGNATURE_ALGORITHM);
+            sig = Signature.getInstance(SIGNATURE_ALGORITHM);
             sig.initVerify(publicKey);
             sig.update(signedData.getBytes());
-            if (!sig.verify(signatureBytes)) {
+            if (!sig.verify(Base64.decode(signature))) {
                 Log.e(TAG, "Signature verification failed.");
                 return false;
             }
@@ -114,6 +115,8 @@ public class Security {
             Log.e(TAG, "Invalid key specification.");
         } catch (SignatureException e) {
             Log.e(TAG, "Signature exception.");
+        } catch (Base64DecoderException e) {
+            Log.e(TAG, "Base64 decoding failed.");
         }
         return false;
     }

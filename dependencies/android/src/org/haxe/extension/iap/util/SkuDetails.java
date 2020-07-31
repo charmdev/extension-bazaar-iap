@@ -61,7 +61,6 @@ public class SkuDetails {
     public String toString() {
         return "SkuDetails:" + mJson;
     }
-
     public String toJsonString() {
         return mJson;
     }

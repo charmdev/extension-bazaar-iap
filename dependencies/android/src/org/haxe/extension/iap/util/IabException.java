@@ -15,7 +15,6 @@
 
 package org.haxe.extension.iap.util;
 
-
 /**
  * Exception thrown when something went wrong with in-app billing.
  * An IabException has an associated IabResult (an error).

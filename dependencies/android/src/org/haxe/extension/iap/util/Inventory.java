@@ -15,15 +15,12 @@
 
 package org.haxe.extension.iap.util;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
 import android.util.Log;
-
-
 /**
  * Represents a block of information about in-app items.
  * An Inventory is returned by such methods as {@link IabHelper#queryInventory}.
@@ -92,7 +89,7 @@ public class Inventory {
     void addPurchase(Purchase p) {
         mPurchaseMap.put(p.getSku(), p);
     }
-
+    
     public String toJsonString() {
             Log.d("inventory", "to json");
         String jsonResp = "{ \"descriptions\":[ ";

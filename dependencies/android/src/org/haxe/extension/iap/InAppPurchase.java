@@ -146,7 +146,7 @@ public class InAppPurchase extends Extension {
 
 	@Override public void onCreate (Bundle savedInstanceState) {
 		if (InAppPurchase.inAppPurchaseHelper != null) {
-			InAppPurchase.inAppPurchaseHelper.onReCreate(Extension.mainActivity);
+			//InAppPurchase.inAppPurchaseHelper.onReCreate(Extension.mainActivity);
 		}
 	}
 
