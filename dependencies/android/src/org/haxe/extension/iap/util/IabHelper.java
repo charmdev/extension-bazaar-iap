@@ -192,9 +192,10 @@ public class IabHelper {
             iabConnection = serviceIAB;
         } else {
             IAB broadcastIAB = new BroadcastIAB(mContext, logger, mSignatureBase64);
+            iabConnection = broadcastIAB;
             boolean canConnectToReceiver = broadcastIAB.connect(mContext, connectListener);
-            if (canConnectToReceiver) {
-                iabConnection = broadcastIAB;
+            if (!canConnectToReceiver) {
+                iabConnection = null;
             }
         }
 
