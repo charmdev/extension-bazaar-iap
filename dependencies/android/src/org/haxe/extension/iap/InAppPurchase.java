@@ -112,7 +112,7 @@ public class InAppPurchase extends Extension {
 		}
 		
 		InAppPurchase.inAppPurchaseHelper = new IabHelper (Extension.mainContext, publicKey);
-		//InAppPurchase.inAppPurchaseHelper.enableDebugLogging(true, "Billing hx");
+		InAppPurchase.inAppPurchaseHelper.enableDebugLogging(true, "Billing hx");
 		InAppPurchase.inAppPurchaseHelper.startSetup (new IabHelper.OnIabSetupFinishedListener () {
 			
 			public void onIabSetupFinished (final IabResult result) {

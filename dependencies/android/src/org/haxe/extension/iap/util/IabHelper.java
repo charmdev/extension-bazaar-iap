@@ -186,12 +186,13 @@ public class IabHelper {
         };
 
         IAB serviceIAB = new ServiceIAB(logger);
+        iabConnection = serviceIAB;
+        logger.logDebug("serviceIAB: "  + serviceIAB);
         boolean canConnectToService = serviceIAB.connect(mContext, connectListener);
 
-        if (canConnectToService) {
-            iabConnection = serviceIAB;
-        } else {
+        if (!canConnectToService) {
             IAB broadcastIAB = new BroadcastIAB(mContext, logger, mSignatureBase64);
+            logger.logDebug("broadcastIAB: "  + broadcastIAB);
             iabConnection = broadcastIAB;
             boolean canConnectToReceiver = broadcastIAB.connect(mContext, connectListener);
             if (!canConnectToReceiver) {
@@ -207,6 +208,7 @@ public class IabHelper {
 
     private void checkBillingSupported(final OnIabSetupFinishedListener listener) {
         String packageName = mContext.getPackageName();
+        logger.logDebug("checkBillingSupported iabConnection: "  + iabConnection + " " packageName);
         iabConnection.isBillingSupported(3, packageName, new BillingSupportCommunication() {
             @Override
             public void onBillingSupportResult(int response) {
