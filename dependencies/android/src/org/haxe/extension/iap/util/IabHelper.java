@@ -208,7 +208,7 @@ public class IabHelper {
 
     private void checkBillingSupported(final OnIabSetupFinishedListener listener) {
         String packageName = mContext.getPackageName();
-        logger.logDebug("checkBillingSupported iabConnection: "  + iabConnection + " " packageName);
+        logger.logDebug("checkBillingSupported iabConnection: "  + iabConnection + " " + packageName);
         iabConnection.isBillingSupported(3, packageName, new BillingSupportCommunication() {
             @Override
             public void onBillingSupportResult(int response) {
