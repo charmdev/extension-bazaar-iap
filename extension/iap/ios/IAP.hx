@@ -171,6 +171,10 @@ import haxe.Json;
 	public static function consume (purchase:Purchase) : Void {
 		purchases_finish_transaction (purchase.transactionID);
 	}
+	
+	public static function queryInventory():Void {
+		// TODO
+	}
 
 	/**
 	 * Manually finishes a transaction from the SKPaymentQueue. If <code>manualTransactionMode</code> is false,
@@ -226,7 +230,7 @@ import haxe.Json;
 				var evt:IAPEvent = new IAPEvent (IAPEvent.PURCHASE_SUCCESS);
 				evt.purchase = new Purchase(inEvent);
 				evt.productID = evt.purchase.productID;
-				inventory.purchaseMap.set(evt.purchase.productID, evt.purchase);
+				inventory.addPurchase(evt.purchase);
 
 				dispatchEvent (evt);
 

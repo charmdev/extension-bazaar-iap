@@ -7,57 +7,62 @@ package extension.iap;
 
 class Inventory
 {
-
-	public var productDetailsMap(default, null): Map<String, ProductDetails>;
-	public var purchaseMap(default, null): Map<String, Purchase>;
+	public var productDetailsMap(default, null):Map<String, ProductDetails>;
+	
+	public var purchaseMap(default, null):Map<String, Purchase>;
+	public var pendingMap(default, null):Map<String, Purchase>;
 	
 	public function new(?dynObj:Dynamic) 
 	{
 		productDetailsMap = new Map();
+		
 		purchaseMap = new Map();
+		pendingMap = new Map();
 		
 		if (dynObj != null) {
 			
 			var dynDescriptions:Array<Dynamic> = Reflect.field(dynObj, "descriptions");
-			if (dynDescriptions != null) {
-				
-				for (dynItm in dynDescriptions) {
+			if (dynDescriptions != null) 
+			{
+				for (dynItm in dynDescriptions) 
+				{
 					productDetailsMap.set(cast Reflect.field(dynItm, "key"), new ProductDetails(Reflect.field(dynItm, "value")));
 				}
-				
 			}
 			
 			var dynPurchases:Array<Dynamic> = Reflect.field(dynObj, "purchases");
-			if (dynPurchases != null) {
-				
-				for (dynItm in dynPurchases) {
+			if (dynPurchases != null) 
+			{
+				for (dynItm in dynPurchases) 
+				{
 					var p = new Purchase(Reflect.field(dynItm, "value"), Reflect.field(dynItm, "itemType"), Reflect.field(dynItm, "signature"));
 					purchaseMap.set(cast Reflect.field(dynItm, "key"), p);
 				}
-				
 			}
-			
 		}
-
 	}
 	
 	/** Returns the listing details for an in-app product. */
-	public function getProductDetails(productId:String) :ProductDetails {
+	public function getProductDetails(productId:String):ProductDetails 
+	{
 		return productDetailsMap.get(productId);
 	}
 	
 	/** Returns purchase information for a given product, or null if there is no purchase. */
-    public function getPurchase(productId:String) :Purchase {
+    public function getPurchase(productId:String):Purchase 
+	{
         return purchaseMap.get(productId);
     }
 
     /** Returns whether or not there exists a purchase of the given product. */
-    public function hasPurchase(productId:String) :Bool {
+    public function hasPurchase(productId:String):Bool 
+	{
         return purchaseMap.exists(productId);
     }
 
     /** Return whether or not details about the given product are available. */
-    public function hasDetails(productId:String) :Bool {
+    public function hasDetails(productId:String):Bool 
+	{
         return productDetailsMap.exists(productId);
     }
 
@@ -69,9 +74,31 @@ class Inventory
      * purchase data from the Inventory you already have is quicker than querying for
      * a new Inventory.
      */
-    public function erasePurchase(productId:String) :Void {
-		
-        if (purchaseMap.exists(productId)) purchaseMap.remove(productId);
+    public function erasePurchase(productId:String):Void 
+	{
+        if (purchaseMap.exists(productId)) 
+		{
+			purchaseMap.remove(productId);
+		}
     }
+	
+	public function addPurchase(purchase:Purchase):Void 
+	{
+		purchaseMap.set(purchase.productID, purchase);
+		erasePending(purchase.productID);
+	}
+	
+	public function addPending(purchase:Purchase):Void 
+	{
+		pendingMap.set(purchase.productID, purchase);
+	}
+	
+	public function erasePending(productId:String):Void 
+	{
+		if (pendingMap.exists(productId)) 
+		{
+			pendingMap.remove(productId);
+		}
+	}
 	
 }

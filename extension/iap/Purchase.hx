@@ -3,8 +3,10 @@ import haxe.Json;
 
 class Purchase
 {
-
 	public var productID:String;
+	
+	public var purchaseID:String;
+	public var purchaseDate:Int;
 	
 	// Android Properties
 	public var itemType(default, null):String;
@@ -32,7 +34,6 @@ class Purchase
 	
 	public function new(baseObj:Dynamic, ?itemType:String, ?signature:String) 
 	{
-
 		if (baseObj==null) {
 			return;
 		}
@@ -67,6 +68,10 @@ class Purchase
 		transactionDate = Reflect.field(dynObj, "transactionDate");
 		
 		this.originalJson = originalJson;
+		
+		// Handle both Android and iOS Ids
+		purchaseID = Reflect.hasField(dynObj, "orderId") ? orderId : transactionID;
+		purchaseDate = Reflect.hasField(dynObj, "purchaseTime") ? purchaseTime : transactionDate;
 	}
 	
 	public function toString() :String {
